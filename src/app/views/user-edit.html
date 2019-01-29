@@ -1,0 +1,33 @@
+<div class="col-lg-6" *ngIf="identity">
+    <h1>{{titulo}}</h1>
+    <div *ngIf="alertUpdate" class="alert alert-info">
+        {{alertUpdate}}
+    </div>
+    <form #userUpdateForm="ngForm" class="col-md-10" (ngSubmit)="onSubmit()">
+
+        <p>
+            <label for="correo">Nombre</label>
+            <input type="text" #name="ngModel" name="name" [(ngModel)]="user.name" class="form-control" required/>
+            <span *ngIf="!email.valid && email.touched">El email es obligatorio</span>
+        </p>
+        <p>
+            <label for="correo">Apellidos</label>
+            <input type="text" #surname="ngModel" name="surname" [(ngModel)]=
+                user.surname class="form-control" required/>
+        </p>
+        <p>
+            <label for="correo">Correo electronico: </label>
+            <input type="email" #email="ngModel" name="email" [(ngModel)]="user.email" class="form-control" required/>
+            <span *ngIf="!email.valid && email.touched">El email es obligatorio</span>
+        </p>
+
+        <div class="image_for_edit" *ngIf="user.image && user.image != 'null'">
+            <img src="{{url + 'get-image-user/' + user.image}}"/>
+        </div>
+        <p>
+            <label for="">Sube tu foto</label>
+            <input type="file" placeholder="Subir imagen..." (change)="fileChangeEvent($event)"/>
+        </p>
+        <input type="submit" value="actualizar mis datos" class="btn btn-primary">
+    </form>
+</div>

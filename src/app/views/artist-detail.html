@@ -1,0 +1,36 @@
+<div class="artistPage col-lg-12" [style.background]="pageColor">
+    <div *ngIf="artist" class="artist-box">
+        <div class="artistInfo" >
+            <div class="artistDetailImage">
+                <img *ngIf="artist.image != 'null'" class="" src="{{url + 'get-image-artist/' + artist.image}}" alt="{{'imagen de ' + artist.name}}">
+            </div>
+            <div class="data">
+                <h1>{{artist.name}}</h1>
+                <p class="description">{{artist.description}}</p>
+                <a [routerLink]="['/albums/crear/', artist._id]" *ngIf="identity.role == 'ROLE_ADMIN'" class="btn btn-primary">Añadir album</a>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="gallery-albums" *ngIf=" albums">
+
+        </div>
+    </div>
+
+    <div class="artistContent col-lg-12">
+        <div class="artistAlbums" myMatchHeight="card">
+            <h2>Albums</h2>
+            <p>{{albums | json}}</p>
+            <div class="col-lg-2" *ngFor="let album of albums">
+                <div class="artistAlbum">
+                    <img src="{{url + 'get-image-album/' + album.image}}" alt="">
+                    <div class="albumInfo">
+                        <h3>{{album.title}}</h3>
+                        <a (click)="deleteAlbum(album._id)" class="btn btn-danger" *ngIf="identity.role == 'ROLE_ADMIN'"><span class="glyphicon glyphicon-trash"></span> BORRAR ALBUM</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

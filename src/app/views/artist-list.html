@@ -1,0 +1,48 @@
+<div class="head-page col-lg-12">
+    <div class="head-page" *ngIf="identity">
+        <!--<h1> {{titulo}} </h1>-->
+    </div> 
+    
+
+    <ul class="pagination">
+        <li [class.disabled]="pages==1"><a [routerLink]="['/artistas/', prev_page]">&laquo;</a></li>
+        <li><a [routerLink]="['/artistas/', prev_page]">{{page}} de {{pages}}</a></li>
+        <li [class.disabled]="pages==page"><a [routerLink]="['/artistas/', next_page]">&raquo;</a></li>
+    </ul>
+
+    <a *ngIf="identity.role == 'ROLE_ADMIN'" class="btn btn-default" [routerLink]="['/artistas/crear/']">
+        <span class="glyphicon glyphicon-plus"></span>
+        añadir artista
+    </a>
+</div>
+
+<div *ngIf="error" class="alert alert-danger col-lg-12">
+    <strong>ERROR! </strong> {{error}}
+</div>
+
+<div class="clearfix artists-list">
+    <div class="col-lg-3" *ngFor="let artist of artists">
+        <div class="card artist">
+            <div [routerLink]="['/artistas/ver/', artist._id]" class="contenedor-imagen-artista ">
+                <img *ngIf="artist.image != 'null'" class="card-img-top" src="{{url + 'get-image-artist/' + artist.image}}" alt="{{'imagen de ' + artist.name}}">
+                <span *ngIf="artist.image == 'null'" class="align-middle sin-imagen-artista glyphicon glyphicon-user"></span>
+            </div>
+            <div class="card-block info_artista">
+                <a [routerLink]="['/artistas/ver/', artist._id]"><h2 class="card-title">{{artist.name}}</h2></a>
+                <p class="card-text">{{artist.description}}</p>
+            </div>
+            
+            <div class="card-block admin_buttons" *ngIf="identity.role == 'ROLE_ADMIN'">
+                <a [routerLink]="['/artistas/editar', artist._id]" class="btn btn-outline-primary btn-back"> <span class="glyphicon glyphicon-edit"></span> <span class="txt">Editar</span></a>
+                <a (click)="onDeleteConfirm(artist)" class="btn btn-outline-danger btn-back"><span class="glyphicon glyphicon-trash"></span><span class="txt">Borrar</span></a>
+                <a [routerLink]="['/albums/crear', artist._id]" class="btn btn-outline-success btn-back"> <span class="glyphicon glyphicon-plus"></span> <span class="txt">Album</span></a>
+                
+            </div>
+            <div class="confirmacion_borrado" *ngIf="artistToDelete == artist" >
+                <div (click)="this.artistToDelete = null" class="btn btn-success boton_confir_cancelar">CANCELAR</div>
+                <div (click)="delete(artist)" class="btn btn-danger boton_confir_borrar"><span class="glyphicon glyphicon-trash"></span> BORRAR</div>  
+            </div>
+        </div>
+    </div>
+    
+</div>
